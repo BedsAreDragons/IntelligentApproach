@@ -7,7 +7,7 @@ using namespace EuroScopePlugIn;
 
 const string PLUGIN_NAME = "MUAC PlugIn";
 const string PLUGIN_VERSION = "@appveyor_build";
-const string PLUGIN_AUTHOR = "github.c";
+const string PLUGIN_AUTHOR = "vats.im/intelligentapproach";
 const string PLUGIN_COPY = "GPL v3";
 
 #define MUAC_RADAR_SCREEN_VIEW "Standard ES radar screen"

@@ -441,19 +441,20 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 		if (IsPrimary) {
 			AcState = TagConfiguration::TagStates::NotConcerned;
 			IsSoft = false;
+			HideTarget = true;
 		}
 
 		// if in a state that needs to force filters
 		if (AcState == TagConfiguration::TagStates::Redundant || AcState == TagConfiguration::TagStates::TransferredFromMe ||
 			AcState == TagConfiguration::TagStates::TransferredToMe) {
 			IsSoft = false;
-			HideTarget = false;
+			HideTarget = true;
 		}
 
 		// In topdown mode, assumed traffic can be hidden by filters to facilitate topdown control
 		if (AcState == TagConfiguration::TagStates::Assumed && !ButtonsPressed[BUTTON_TOPDOWN]) {
 			IsSoft = false;
-			HideTarget = false;
+			HideTarget = true;
 		}
 
 

@@ -109,14 +109,6 @@ public:
 
 			dc->RestoreDC(dcSaveBold);
 			//FontManager::SelectStandardFont(dc);
-
-			if (CCallsignLookup::Available) {
-				string callsign_code = flightPlan.GetCallsign();
-				callsign_code = callsign_code.substr(0, 3);
-
-				dc->TextOutA(TopLeftPosition.x + LeftTextOffset, TopBar.bottom - PaddingSides, 
-					CCallsignLookup::Lookup->getCallsign(callsign_code).c_str());
-			}
 		}
 
 		// Close button, first one for size, second one for render
@@ -147,7 +139,7 @@ public:
 		string SecondLineString = "";
 
 		if (flightPlan.IsValid()) {
-			SecondLineString += "¦";
+			SecondLineString += "ï¿½";
 
 			SecondLineString += string(flightPlan.GetFlightPlanData().GetAircraftFPType()).substr(0, 5) + " ";
 			SecondLineString += "/" + string(1, flightPlan.GetFlightPlanData().GetAircraftWtc()) + " ";
@@ -157,9 +149,9 @@ public:
 			}
 
 			SecondLineString += string(flightPlan.GetFlightPlanData().GetOrigin()) + " " + 
-				string(flightPlan.GetFlightPlanData().GetDestination()) + "¦";
+				string(flightPlan.GetFlightPlanData().GetDestination()) + "ï¿½";
 
-			SecondLineString += "ECL" + padWithZeros(3, flightPlan.GetFlightPlanData().GetFinalAltitude() / 100) + "¦";
+			SecondLineString += "ECL" + padWithZeros(3, flightPlan.GetFlightPlanData().GetFinalAltitude() / 100) + "ï¿½";
 
 			// Cop X/N
 			if (flightPlan.GetTrackingControllerIsMe()) {
@@ -193,7 +185,7 @@ public:
 				SecondLineString += (point + time + fl.substr(0, 3));
 			}
 
-			SecondLineString += "¦";
+			SecondLineString += "ï¿½";
 
 			if (flightPlan.GetTrackingControllerIsMe()) {
 				if (strlen(flightPlan.GetCoordinatedNextController()) != 0 && instance->GetPlugIn()->ControllerSelect(flightPlan.GetCoordinatedNextController()).IsValid())
@@ -254,7 +246,7 @@ public:
 					Rwy = "   ";
 
 				ThirdLineText += Star;
-				ThirdLineText += " " + Rwy + "¦";
+				ThirdLineText += " " + Rwy + "ï¿½";
 			}
 
 			CRadarTargetPositionData pos = radarTarget.GetPosition();
@@ -289,7 +281,7 @@ public:
 				ThirdLineText += " M" + 
 					to_string(mach).substr(0, 4);
 			}
-			ThirdLineText += "¦GS" + padWithZeros(4, radarTarget.GetPosition().GetReportedGS()) + " ";
+			ThirdLineText += "ï¿½GS" + padWithZeros(4, radarTarget.GetPosition().GetReportedGS()) + " ";
 
 			string VerticalRate = "00";
 			

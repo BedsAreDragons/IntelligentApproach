@@ -384,7 +384,7 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 		bool IsSoft = false;
 		bool IsPrimary = !radarTarget.GetPosition().GetTransponderC() && !radarTarget.GetPosition().GetTransponderI();
 
-		bool HideTarget = false;
+		bool HideTarget = true;
 
 		// If is below 60kts, don't show
 		if (radarTarget.GetPosition().GetReportedGS() < 60)

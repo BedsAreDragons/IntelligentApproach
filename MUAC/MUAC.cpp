@@ -1,33 +1,59 @@
 #include "stdafx.h"
 #include "MUAC.h"
+#include "CallsignLookup.h"
 
-future<string> fRDFString;
+MUAC::MUAC()
+    : CPlugIn(COMPATIBILITY_CODE,
+              PLUGIN_NAME.c_str(),
+              PLUGIN_VERSION.c_str(),
+              PLUGIN_AUTHOR.c_str(),
+              PLUGIN_COPY.c_str())
+{
+    srand((unsigned int)time(nullptr));
+    RegisterPlugin();
 
-MUAC::MUAC():CPlugIn(COMPATIBILITY_CODE, PLUGIN_NAME.c_str(), PLUGIN_VERSION.c_str(), PLUGIN_AUTHOR.c_str(), PLUGIN_COPY.c_str()) {
+    DisplayUserMessage(
+        "Message",
+        "MUAC PlugIn",
+        ("Version " + PLUGIN_VERSION + " loaded").c_str(),
+        false, false, false, false, false
+    );
 
-	srand((unsigned int)time(nullptr));
-	this->RegisterPlugin();
+    char DllPathFile[_MAX_PATH];
+    GetModuleFileNameA(HINSTANCE(&__ImageBase), DllPathFile, sizeof(DllPathFile));
 
-	DisplayUserMessage("Message", "MUAC PlugIn", string("Version " + PLUGIN_VERSION + " loaded").c_str(), false, false, false, false, false);
+    std::string DllPath = DllPathFile;
+    DllPath.resize(DllPath.size() - strlen("MUAC.dll"));
 
-	char DllPathFile[_MAX_PATH];
-	string DllPath;
-	GetModuleFileNameA(HINSTANCE(&__ImageBase), DllPathFile, sizeof(DllPathFile));
-	DllPath = DllPathFile;
-	DllPath.resize(DllPath.size() - strlen("MUAC.dll"));
+    std::string FilePath = DllPath + "\\config.txt";
 
-	string FilePath = DllPath + "\\config.txt";
-	if (file_exist(FilePath)) {
-		CCallsignLookup::Lookup = new CCallsignLookup(FilePath);
-		CCallsignLookup::Available = true;
-	}
-	else {
-		CCallsignLookup::Available = false;
-		DisplayUserMessage("Message", "IntelligentApproach", string("Warning: Could not load config, using default values.").c_str(), 
-			true, true, false, false, true);
-	}
+    if (!file_exist(FilePath))
+    {
+        CCallsignLookup::Available = false;
 
+        DisplayUserMessage(
+            "Message",
+            "MUAC PlugIn",
+            "Warning: config.txt not found. Using default values.",
+            true, true, false, false, true
+        );
+    }
+    else
+    {
+        CCallsignLookup::Lookup = new CCallsignLookup(FilePath);
+
+        if (CCallsignLookup::Available)
+        {
+            DisplayUserMessage(
+                "Message",
+                "MUAC PlugIn",
+                "config.txt loaded successfully.",
+                false, false, false, false, false
+            );
+        }
+    }
 }
+
 
 MUAC::~MUAC() {}
 

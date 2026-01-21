@@ -1,54 +1,45 @@
 #include "stdafx.h"
 #include "CallsignLookup.h"
+#include <fstream>
+#include <sstream>
 
 bool CCallsignLookup::Available = false;
 CCallsignLookup* CCallsignLookup::Lookup = nullptr;
 
-CCallsignLookup::CCallsignLookup(string fileName)
+CCallsignLookup::CCallsignLookup(const std::string& fileName)
 {
-    ifstream myfile(fileName);
-    string line;
-
+    std::ifstream myfile(fileName);
     if (!myfile.is_open())
-        return;
-
-    while (getline(myfile, line))
     {
-        // Ignore empty lines
-        if (line.empty())
+        Available = false;
+        return;
+    }
+
+    std::string line;
+    while (std::getline(myfile, line))
+    {
+        if (line.empty() || line[0] != '#')
             continue;
 
-        // Must start with #
-        if (line[0] != '#')
-            continue;
-
-        // Remove #
         line.erase(0, 1);
 
-        istringstream iss(line);
-        string key;
+        std::istringstream iss(line);
+        std::string key;
         int value;
 
         if (iss >> key >> value)
-        {
             configValues[key] = value;
-        }
     }
 
-    myfile.close();
     Available = true;
 }
 
-int CCallsignLookup::getValue(const string& key) const
+int CCallsignLookup::getValue(const std::string& key) const
 {
     auto it = configValues.find(key);
-    if (it == configValues.end())
-        return 0; // or -1 if you prefer error signalling
-
-    return it->second;
+    return (it != configValues.end()) ? it->second : 0;
 }
 
-// Convenience getters
 int CCallsignLookup::getLineupTime() const
 {
     return getValue("LINEUPTIME");
@@ -69,6 +60,4 @@ int CCallsignLookup::getMovementPerHour() const
     return getValue("MOVEMENTPERHOUR");
 }
 
-CCallsignLookup::~CCallsignLookup()
-{
-}
+CCallsignLookup::~CCallsignLookup() {}

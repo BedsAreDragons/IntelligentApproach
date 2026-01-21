@@ -1,23 +1,17 @@
 #pragma once
-#include <fstream>
-#include <string>
-#include <sstream>
 #include <map>
-
-using namespace std;
+#include <string>
 
 class CCallsignLookup
 {
 private:
-    map<string, int> configValues;
+    std::map<std::string, int> configValues;
 
 public:
-    CCallsignLookup(string fileName);
+    explicit CCallsignLookup(const std::string& fileName);
 
-    // Generic getter
-    int getValue(const string& key) const;
+    int getValue(const std::string& key) const;
 
-    // Convenience getters (optional but practical)
     int getLineupTime() const;
     int getDepartTime() const;
     int getLandTime() const;

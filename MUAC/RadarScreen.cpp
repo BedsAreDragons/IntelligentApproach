@@ -468,6 +468,37 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 #pragma region BeforeTags
 
 		if (Phase == REFRESH_PHASE_BEFORE_TAGS) {
+
+
+			const bool hasConfig =
+        	CCallsignLookup::Available &&
+        	CCallsignLookup::Lookup != nullptr;
+
+			const int lineupTime = hasConfig
+				? CCallsignLookup::Lookup->getLineupTime()
+				: 30;
+
+			const int departTime = hasConfig
+				? CCallsignLookup::Lookup->getDepartTime()
+				: 45;
+
+			const int landTime = hasConfig
+				? CCallsignLookup::Lookup->getLandTime()
+				: 20;
+
+			const int movementPerHour = hasConfig
+				? CCallsignLookup::Lookup->getMovementPerHour()
+				: 60;
+
+
+			
+			int minutesrequired = 60/movementPerHour;
+			double distance = minutesRequired * (147.5 / 60.0);
+			int technicalrequired = landTime + lineupTime+departTime+20;
+			double technicaldistance = technicalrequired *(147.5 / 60.0);
+			int heavy = technicalrequired + 2.4;
+			double heavydistance = heavy * (147.5 /60.0)
+
 			if (!IsPrimary) {
 				CRect r = AcSymbols::DrawSquareAndTrail(&dc, AcState, this, radarTarget, ButtonsPressed[BUTTON_DOTS], 
 					IsSoft, StcaInstance->IsSTCA(radarTarget.GetCallsign()), Blink, isDetailed);
@@ -489,7 +520,7 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 			// If final approach help is toggled, display the vectors
 			if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {
 					bool existsInList = find(ExtendedAppVector.begin(), ExtendedAppVector.end(), string(radarTarget.GetCallsign())) != ExtendedAppVector.end();
-					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? 5 : 3);
+					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? heavydistance : technicaldistance : distance);
 					AddScreenObject(SCREEN_AC_APP_ARROW, radarTarget.GetCallsign(), r, true, "");
 			}
 		}

@@ -496,7 +496,7 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 			double distance = minutesrequired * (147.5 / 3600.0);
 
 			double technicalrequired = landTime + lineupTime+departTime+20;
-			double technicaldistance = technicalrequired *(147.5 / 3600.0); 
+			double technicaldistance = technicalrequired *(147.5 / 3600.0);
 			double heavy = technicalrequired + 2.4;
 			double heavydistance = heavy * (147.5 /3600.0);
 

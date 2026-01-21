@@ -46,13 +46,13 @@ public:
 		}
 
 		if (tag.TagState == TagConfiguration::TagStates::Assumed) {
-			PrimaryColor = Colours::White.ToCOLORREF();
+			PrimaryColor = Colours::AircraftGreen.ToCOLORREF();
 			SecondaryColor = Colours::AircraftGreen.ToCOLORREF();
 		}
 
 		if (tag.TagState == TagConfiguration::TagStates::Next ||
 			tag.TagState == TagConfiguration::TagStates::InSequence) {
-			SecondaryColor = Colours::White.ToCOLORREF();
+			SecondaryColor = Colours::AircraftGreen.ToCOLORREF();
 		}
 
 		if (tag.TagState == TagConfiguration::TagStates::TransferredToMe) {
@@ -146,7 +146,6 @@ public:
 					dc->MoveTo(TextBox.left, TextBox.bottom);
 					dc->LineTo(TextBox.right, TextBox.bottom);
 				}
-
 
 				// if Detailed, then we store the area for click
 				if (isDetailed && TagItem.ClickId != 0)

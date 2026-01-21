@@ -79,8 +79,8 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 		// One second actions
 		double t = (double)(clock() - OneSecondTimer) / ((double)CLOCKS_PER_SEC);
 		if (t >= 1) {
-			StcaInstance->OnRefresh(GetPlugIn());
-			MtcdInstance->OnRefresh(GetPlugIn());
+			//StcaInstance->OnRefresh(GetPlugIn());
+			//MtcdInstance->OnRefresh(GetPlugIn());
 			OneSecondTimer = clock();
 		}
 
@@ -419,44 +419,28 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 			
 		bool isDetailed = DetailedTag == radarTarget.GetCallsign();
 		
-		
-
 		// Determining the tag state
 		if (isCorrelated) {
-			if (CorrelatedFlightPlan.GetState() == FLIGHT_PLAN_STATE_NOTIFIED){
+			if (CorrelatedFlightPlan.GetState() == FLIGHT_PLAN_STATE_NOTIFIED)
 				AcState = TagConfiguration::TagStates::InSequence;
-				HideTarget = false;
-			}
-			if (CorrelatedFlightPlan.GetState() == FLIGHT_PLAN_STATE_COORDINATED){
+			if (CorrelatedFlightPlan.GetState() == FLIGHT_PLAN_STATE_COORDINATED)
 				AcState = TagConfiguration::TagStates::Next;
-				HideTarget = false;
-			}
-			if (CorrelatedFlightPlan.GetState() == FLIGHT_PLAN_STATE_TRANSFER_TO_ME_INITIATED){
+			if (CorrelatedFlightPlan.GetState() == FLIGHT_PLAN_STATE_TRANSFER_TO_ME_INITIATED)
 				AcState = TagConfiguration::TagStates::TransferredToMe;
-				HideTarget = false;
-			}
-			if (CorrelatedFlightPlan.GetState() == FLIGHT_PLAN_STATE_TRANSFER_FROM_ME_INITIATED){
+			if (CorrelatedFlightPlan.GetState() == FLIGHT_PLAN_STATE_TRANSFER_FROM_ME_INITIATED)
 				AcState = TagConfiguration::TagStates::TransferredFromMe;
-				HideTarget = false;
-			}
-			if (CorrelatedFlightPlan.GetState() == FLIGHT_PLAN_STATE_ASSUMED){
+			if (CorrelatedFlightPlan.GetState() == FLIGHT_PLAN_STATE_ASSUMED)
 				AcState = TagConfiguration::TagStates::Assumed;
-				HideTarget = false;
-			}
-			if (CorrelatedFlightPlan.GetState() == FLIGHT_PLAN_STATE_REDUNDANT){
+			if (CorrelatedFlightPlan.GetState() == FLIGHT_PLAN_STATE_REDUNDANT)
 				AcState = TagConfiguration::TagStates::Redundant;
-				HideTarget = false;
-			}
 		}
 		else{ 
 			AcState = TagConfiguration::TagStates::Uncorrelated;
-			HideTarget = true;
 		}
 
 		if (IsPrimary) {
 			AcState = TagConfiguration::TagStates::NotConcerned;
 			IsSoft = false;
-			HideTarget = true;
 		}
 
 		// if in a state that needs to force filters
@@ -472,8 +456,7 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 			HideTarget = false;
 		}
 
-		//if(CorrelatedFlightPlan.GetState() == FLIGHT_PLAN_STATE_NON_CONCERNED && FLIGHT_PLAN_STATE_NON_CONCERNED == 1)
-				//HideTarget = true;
+
 		//
 		// Final decision
 		//
@@ -505,7 +488,7 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 			if (!IsPrimary && isCorrelated && ButtonsPressed[BUTTON_FIN]) {
 				if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {
 					bool existsInList = find(ExtendedAppVector.begin(), ExtendedAppVector.end(), string(radarTarget.GetCallsign())) != ExtendedAppVector.end();
-					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? 10.3 : 7.1);
+					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? 5 : 3);
 					AddScreenObject(SCREEN_AC_APP_ARROW, radarTarget.GetCallsign(), r, true, "");
 				}
 			}
@@ -599,7 +582,7 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 		MTCDWindow->Render(&dc, this, MousePoint, MtcdInstance, SepToolPairs, ButtonsPressed[BUTTON_MTCD]);
 
 		// Soft Tag deconfliction
-		for (const auto areas : SoftTagAreas)
+		/*for (const auto areas : SoftTagAreas)
 		{
 			if (areas.first == DetailedTag)
 				continue;
@@ -619,14 +602,14 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 
 			CRect OriginalArea = areas.second;
 
-			POINT newOffset = AntiOverlap::Execute(this, SoftTagAreas, TagOffsets, MenuBar::GetVelValueButtonPressed(ButtonsPressed), rt);
+			/POINT newOffset = AntiOverlap::Execute(this, SoftTagAreas, TagOffsets, MenuBar::GetVelValueButtonPressed(ButtonsPressed), rt);
 
 			if (newOffset.x != TagOffsets[rt.GetCallsign()].x && newOffset.y != TagOffsets[rt.GetCallsign()].y) {
 				TagOffsets[areas.first] = newOffset;
 				SoftTagAreas[areas.first] = { newOffset.x, newOffset.y, newOffset.x + OriginalArea.Size().cx, newOffset.y + OriginalArea.Size().cy };
 				RecentlyAutoMovedTags[areas.first] = clock();
 			}
-		}
+		}*/
 
 		// Tag deconfliction
 		for (const auto areas : TagAreas)
@@ -676,13 +659,13 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 			dc.RestoreDC(saveTest);*/
 			// END TEST
 
-			POINT newOffset = AntiOverlap::Execute(this, TagAreas, TagOffsets, MenuBar::GetVelValueButtonPressed(ButtonsPressed), rt);
+			//POINT newOffset = AntiOverlap::Execute(this, TagAreas, TagOffsets, MenuBar::GetVelValueButtonPressed(ButtonsPressed), rt);
 
-			if (newOffset.x != TagOffsets[rt.GetCallsign()].x && newOffset.y != TagOffsets[rt.GetCallsign()].y) {
+			/*if (newOffset.x != TagOffsets[rt.GetCallsign()].x && newOffset.y != TagOffsets[rt.GetCallsign()].y) {
 				TagOffsets[areas.first] = newOffset;
 				TagAreas[areas.first] = { newOffset.x, newOffset.y, newOffset.x + OriginalArea.Size().cx, newOffset.y + OriginalArea.Size().cy };
 				RecentlyAutoMovedTags[areas.first] = clock();
-			}
+			}*/
 		}
 	}
 
@@ -953,10 +936,8 @@ void RadarScreen::OnClickScreenObject(int ObjectType, const char * sObjectId, PO
 		}
 			
 		if (ObjectType == SCREEN_TAG_HORIZ) {
-			if (Button == BUTTON_LEFT) { 
-				RouteBeingShown.push_back(sObjectId);
+			if (Button == BUTTON_LEFT)
 				FunctionId = TAG_ITEM_FUNCTION_NEXT_ROUTE_POINTS_POPUP;
-			}
 			if (Button == BUTTON_RIGHT)
 				FunctionId = TAG_ITEM_FUNCTION_ASSIGNED_HEADING_POPUP;
 		}

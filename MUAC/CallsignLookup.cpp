@@ -1,45 +1,72 @@
 #include "stdafx.h"
 #include "CallsignLookup.h"
 
-//
-// CCallsignLookup Class by Even Rognlien, used with permission
-//
-
 bool CCallsignLookup::Available = false;
 CCallsignLookup* CCallsignLookup::Lookup = nullptr;
 
-CCallsignLookup::CCallsignLookup(std::string fileName) {
+CCallsignLookup::CCallsignLookup(string fileName)
+{
+    ifstream myfile(fileName);
+    string line;
 
-	ifstream myfile;
+    if (!myfile.is_open())
+        return;
 
-	myfile.open(fileName);
+    while (getline(myfile, line))
+    {
+        // Ignore empty lines
+        if (line.empty())
+            continue;
 
-	if (myfile) {
-		string line;
+        // Must start with #
+        if (line[0] != '#')
+            continue;
 
-		while (getline(myfile, line)) {
-			istringstream iss(line);
-			vector<string> tokens;
-			string token;
+        // Remove #
+        line.erase(0, 1);
 
-			while (std::getline(iss, token, '\t'))
-				tokens.push_back(token);
+        istringstream iss(line);
+        string key;
+        int value;
 
-			if (tokens.size() >= 3) {
-				callsigns[tokens.front()] = tokens.at(2);
-			}
-		}
-	}
+        if (iss >> key >> value)
+        {
+            configValues[key] = value;
+        }
+    }
 
-	myfile.close();
+    myfile.close();
+    Available = true;
 }
 
-string CCallsignLookup::getCallsign(string airlineCode) {
+int CCallsignLookup::getValue(const string& key) const
+{
+    auto it = configValues.find(key);
+    if (it == configValues.end())
+        return 0; // or -1 if you prefer error signalling
 
-	if (callsigns.find(airlineCode) == callsigns.end())
-		return "";
+    return it->second;
+}
 
-	return callsigns.find(airlineCode)->second;
+// Convenience getters
+int CCallsignLookup::getLineupTime() const
+{
+    return getValue("LINEUPTIME");
+}
+
+int CCallsignLookup::getDepartTime() const
+{
+    return getValue("DEPARTTIME");
+}
+
+int CCallsignLookup::getLandTime() const
+{
+    return getValue("LANDTIME");
+}
+
+int CCallsignLookup::getMovementPerHour() const
+{
+    return getValue("MOVEMENTPERHOUR");
 }
 
 CCallsignLookup::~CCallsignLookup()

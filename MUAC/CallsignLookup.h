@@ -3,21 +3,28 @@
 #include <string>
 #include <sstream>
 #include <map>
-#include <vector>
 
 using namespace std;
 
 class CCallsignLookup
 {
 private:
-	std::map<string, string> callsigns;
+    map<string, int> configValues;
 
 public:
-	CCallsignLookup(string fileName);
-	string getCallsign(string airlineCode);
+    CCallsignLookup(string fileName);
 
-	static bool Available;
-	static CCallsignLookup* Lookup;
+    // Generic getter
+    int getValue(const string& key) const;
 
-	~CCallsignLookup();
+    // Convenience getters (optional but practical)
+    int getLineupTime() const;
+    int getDepartTime() const;
+    int getLandTime() const;
+    int getMovementPerHour() const;
+
+    static bool Available;
+    static CCallsignLookup* Lookup;
+
+    ~CCallsignLookup();
 };

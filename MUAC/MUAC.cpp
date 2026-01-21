@@ -16,14 +16,14 @@ MUAC::MUAC():CPlugIn(COMPATIBILITY_CODE, PLUGIN_NAME.c_str(), PLUGIN_VERSION.c_s
 	DllPath = DllPathFile;
 	DllPath.resize(DllPath.size() - strlen("MUAC.dll"));
 
-	string FilePath = DllPath + "\\ICAO_Airlines.txt";
+	string FilePath = DllPath + "\\config.txt";
 	if (file_exist(FilePath)) {
 		CCallsignLookup::Lookup = new CCallsignLookup(FilePath);
 		CCallsignLookup::Available = true;
 	}
 	else {
 		CCallsignLookup::Available = false;
-		DisplayUserMessage("Message", "MUAC PlugIn", string("Warning: Could not load callsigns, they will be unavailable").c_str(), 
+		DisplayUserMessage("Message", "IntelligentApproach", string("Warning: Could not load config, using default values.").c_str(), 
 			true, true, false, false, true);
 	}
 

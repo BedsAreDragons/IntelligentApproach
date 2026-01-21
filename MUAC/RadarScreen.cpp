@@ -492,12 +492,12 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 
 
 			
-			int minutesrequired = 60/movementPerHour;
-			double distance = minutesRequired * (147.5 / 60.0);
-			int technicalrequired = landTime + lineupTime+departTime+20;
+			double minutesrequired = 60/movementPerHour;
+			double distance = minutesrequired * (147.5 / 60.0);
+			double technicalrequired = landTime + lineupTime+departTime+20;
 			double technicaldistance = technicalrequired *(147.5 / 60.0);
-			int heavy = technicalrequired + 2.4;
-			double heavydistance = heavy * (147.5 /60.0)
+			double heavy = technicalrequired + 2.4;
+			double heavydistance = heavy * (147.5 /60.0);
 
 			if (!IsPrimary) {
 				CRect r = AcSymbols::DrawSquareAndTrail(&dc, AcState, this, radarTarget, ButtonsPressed[BUTTON_DOTS], 
@@ -520,7 +520,7 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 			// If final approach help is toggled, display the vectors
 			if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {
 					bool existsInList = find(ExtendedAppVector.begin(), ExtendedAppVector.end(), string(radarTarget.GetCallsign())) != ExtendedAppVector.end();
-					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? heavydistance : technicaldistance : distance);
+					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? heavydistance : technicaldistance);
 					AddScreenObject(SCREEN_AC_APP_ARROW, radarTarget.GetCallsign(), r, true, "");
 			}
 		}

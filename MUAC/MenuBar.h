@@ -50,9 +50,10 @@ public:
 		int LeftOffset = TopLeft.x;
 		CRect r;
 		for (auto kv : ButtonData) {
-			r = DrawMenuBarButton(dc, { LeftOffset, TopLeft.y }, kv.second, MousePt, PressedData[kv.first]);
-			LeftOffset += r.Width();
-			radarScreen->AddScreenObject(kv.first, "", r, false, "");
+			break;
+			//r = DrawMenuBarButton(dc, { LeftOffset, TopLeft.y }, kv.second, MousePt, PressedData[kv.first]);
+			//LeftOffset += r.Width();
+			//radarScreen->AddScreenObject(kv.first, "", r, false, "");
 
 			// If the menu is hidden, we stop at the first button
 			if (PressedData[BUTTON_HIDEMENU])

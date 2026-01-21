@@ -29,13 +29,14 @@ RadarScreen::~RadarScreen()
 
 void RadarScreen::LoadAllData()
 {
-	ButtonsPressed[BUTTON_VEL1] = true;
-	ButtonsPressed[BUTTON_FILTER_ON] = true;
-	ButtonsPressed[BUTTON_VELOTH] = true;
-	ButtonsPressed[BUTTON_PRIMARY_TARGETS_ON] = true;
-	ButtonsPressed[BUTTON_DOTS] = true;
-	ButtonsPressed[BUTTON_MTCD] = true;
-	ButtonsPressed[BUTTON_FIM] = true;
+	ButtonsPressed[BUTTON_VEL1] = false;
+	ButtonsPressed[BUTTON_FILTER_ON] = false;
+	ButtonsPressed[BUTTON_VELOTH] = false;
+	ButtonsPressed[BUTTON_PRIMARY_TARGETS_ON] = false;
+	ButtonsPressed[BUTTON_DOTS] = false;
+	ButtonsPressed[BUTTON_MTCD] = false;
+	ButtonsPressed[BUTTON_FIM] = false;
+	ButtonsPressed[BUTTON_FIN] = true;
 
 	LoadFilterButtonsData();
 }
@@ -486,7 +487,7 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 
 
 			// If final approach help is toggled, display the vectors
-			if (!IsPrimary && isCorrelated && ButtonsPressed[BUTTON_FIN]) {
+			if (ButtonsPressed[BUTTON_FIN]) {
 				if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {
 					bool existsInList = find(ExtendedAppVector.begin(), ExtendedAppVector.end(), string(radarTarget.GetCallsign())) != ExtendedAppVector.end();
 					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? 5 : 3);

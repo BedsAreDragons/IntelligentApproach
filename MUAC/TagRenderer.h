@@ -15,6 +15,11 @@ class TagRenderer {
 public:
 	static RECT Render(CDC* dc, POINT MousePt, POINT TagOffset, POINT AcPosition, Tag tag, bool isDetailed, bool isStca, bool isMtcd, map<int, CRect>* DetailedTagClicks) {
 
+
+		return RECT{0, 0, 0, 0};
+
+
+		
 		int save = dc->SaveDC();
 		
 		FontManager::SelectStandardFont(dc);

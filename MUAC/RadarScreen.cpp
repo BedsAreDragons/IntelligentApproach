@@ -385,7 +385,7 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 		bool IsSoft = false;
 		bool IsPrimary = !radarTarget.GetPosition().GetTransponderC() && !radarTarget.GetPosition().GetTransponderI();
 
-		bool HideTarget = true;
+		bool HideTarget = false;
 
 		// If is below 60kts, don't show
 		if (radarTarget.GetPosition().GetReportedGS() < 60)
@@ -487,12 +487,10 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 
 
 			// If final approach help is toggled, display the vectors
-			if (ButtonsPressed[BUTTON_FIN]) {
-				if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {
+			if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {
 					bool existsInList = find(ExtendedAppVector.begin(), ExtendedAppVector.end(), string(radarTarget.GetCallsign())) != ExtendedAppVector.end();
 					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? 5 : 3);
 					AddScreenObject(SCREEN_AC_APP_ARROW, radarTarget.GetCallsign(), r, true, "");
-				}
 			}
 		}
 

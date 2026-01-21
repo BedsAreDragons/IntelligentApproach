@@ -398,10 +398,10 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 
 			// If not in between the hard filters, we don't show it.
 			if (Altitude <= RadarFilters.Hard_Low && !IsPrimary)
-				HideTarget = true;
+				HideTarget = false;
 
 			if (Altitude >= RadarFilters.Hard_High && !IsPrimary)
-				HideTarget = true;
+				HideTarget = false;
 
 			// If Primary
 			if (IsPrimary && !ButtonsPressed[BUTTON_PRIMARY_TARGETS_ON])
@@ -442,20 +442,20 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 		if (IsPrimary) {
 			AcState = TagConfiguration::TagStates::NotConcerned;
 			IsSoft = false;
-			HideTarget = true;
+			HideTarget = false;
 		}
 
 		// if in a state that needs to force filters
 		if (AcState == TagConfiguration::TagStates::Redundant || AcState == TagConfiguration::TagStates::TransferredFromMe ||
 			AcState == TagConfiguration::TagStates::TransferredToMe) {
 			IsSoft = false;
-			HideTarget = true;
+			HideTarget = false;
 		}
 
 		// In topdown mode, assumed traffic can be hidden by filters to facilitate topdown control
 		if (AcState == TagConfiguration::TagStates::Assumed && !ButtonsPressed[BUTTON_TOPDOWN]) {
 			IsSoft = false;
-			HideTarget = true;
+			HideTarget = false;
 		}
 
 

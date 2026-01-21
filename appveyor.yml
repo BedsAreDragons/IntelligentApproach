@@ -46,17 +46,17 @@ install:
 configuration: Release
 
 build_script:
-  - ps: (Get-Content C:\projects\uacplugin\MUAC\Constants.h).replace('@appveyor_build', $Env:appveyor_build_version) | Set-Content C:\projects\uacplugin\MUAC\Constants.h
-  - cmd: msbuild "C:\projects\uacplugin\MUAC.sln" /m /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - ps: (Get-Content C:\projects\intelligentapproach\MUAC\Constants.h).replace('@appveyor_build', $Env:appveyor_build_version) | Set-Content C:\projects\intelligentapproach\MUAC\Constants.h
+  - cmd: msbuild "C:\projects\intelligentapproach\MUAC.sln" /m /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 after_build:
-  - cmd: mkdir UAC-nightly
-  - cmd: cp Release\MUAC.dll UAC-nightly\
-  - cmd: 7z a UAC-nightly.zip %APPVEYOR_BUILD_FOLDER%\UAC-nightly\
+  - cmd: mkdir intelligentapproach-nightly
+  - cmd: cp Release\MUAC.dll intelligentapproach-nightly\
+  - cmd: 7z a intelligentapproach-nightly.zip %APPVEYOR_BUILD_FOLDER%\intelligentapproach-nightly\
 
 #---------------------------------#
 #      artifacts configuration    #
 #---------------------------------#
 
 artifacts:
-  - path: UAC-nightly.zip
+  - path: intelligentapproach-nightly.zip

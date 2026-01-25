@@ -491,14 +491,23 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 				: 60;
 
 
+			const wake = FlightPlan.GetFlightPlanData().GetAircraftWtc();
 			
-			double minutesrequired = 60/movementPerHour;
-			double distance = minutesrequired * (147.5 / 3600.0);
 
-			double technicalrequired = landTime + lineupTime+departTime+20;
-			double technicaldistance = technicalrequired *(147.5 / 3600.0);
-			double heavy = technicalrequired + 60;
-			double heavydistance = heavy * (147.5 /3600.0);
+			double ntrf = landTime + lineupTime+departTime+20;
+			double ntr = landTime + 20;
+			double ntd = ntr *(147.5 / 3600.0);
+			double ntdf = ntrf *(147.5 / 3600.0);
+
+			double ltd = ntr *(90 / 3600.0);
+			double ltdf = ntrf *(90 / 3600.0);
+
+			double htr = ntr + 60;
+			double htrf = ntrf + 60;
+			double htd = htr * (170.5 /3600.0);
+			double htdf = htrf * (170.5 /3600.0);
+
+
 
 			if (!IsPrimary) {
 				CRect r = AcSymbols::DrawSquareAndTrail(&dc, AcState, this, radarTarget, ButtonsPressed[BUTTON_DOTS], 
@@ -519,12 +528,26 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 
 
 			// If final approach help is toggled, display the vectors
+			if (wake == 'H' || 'J') {
+				if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {
+					bool existsInList = find(ExtendedAppVector.begin(), ExtendedAppVector.end(), string(radarTarget.GetCallsign())) != ExtendedAppVector.end();
+					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? htd : htdf);
+					AddScreenObject(SCREEN_AC_APP_ARROW, radarTarget.GetCallsign(), r, true, "");
+			}
+			} elif (wake == 'L') {
+				if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {
+					bool existsInList = find(ExtendedAppVector.begin(), ExtendedAppVector.end(), string(radarTarget.GetCallsign())) != ExtendedAppVector.end();
+					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? ltd : ltdf);
+					AddScreenObject(SCREEN_AC_APP_ARROW, radarTarget.GetCallsign(), r, true, "");
+			}
+			} else {
 			if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {
 					bool existsInList = find(ExtendedAppVector.begin(), ExtendedAppVector.end(), string(radarTarget.GetCallsign())) != ExtendedAppVector.end();
-					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? heavydistance : technicaldistance);
+					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? ntd : ntdf);
 					AddScreenObject(SCREEN_AC_APP_ARROW, radarTarget.GetCallsign(), r, true, "");
 			}
 		}
+	}
 
 #pragma endregion
 

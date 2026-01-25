@@ -14,7 +14,7 @@ MUAC::MUAC()
 
     DisplayUserMessage(
         "Message",
-        "MUAC PlugIn",
+        "IntelligentApproach",
         ("Version " + PLUGIN_VERSION + " loaded").c_str(),
         false, false, false, false, false
     );
@@ -33,7 +33,7 @@ MUAC::MUAC()
 
         DisplayUserMessage(
             "Message",
-            "MUAC PlugIn",
+            "IntelligentApproach",
             "Warning: config.txt not found. Using default values.",
             true, true, false, false, true
         );
@@ -46,7 +46,7 @@ MUAC::MUAC()
         {
             DisplayUserMessage(
                 "Message",
-                "MUAC PlugIn",
+                "IntelligentApproach",
                 "config.txt loaded successfully.",
                 false, false, false, false, false
             );

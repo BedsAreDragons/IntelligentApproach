@@ -5,7 +5,7 @@
 using namespace std;
 using namespace EuroScopePlugIn;
 
-const string PLUGIN_NAME = "MUAC PlugIn";
+const string PLUGIN_NAME = "IntelligentApproach";
 const string PLUGIN_VERSION = "@appveyor_build";
 const string PLUGIN_AUTHOR = "vats.im/intelligentapproach";
 const string PLUGIN_COPY = "GPL v3";

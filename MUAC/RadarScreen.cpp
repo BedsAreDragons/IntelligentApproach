@@ -1,7 +1,12 @@
 #include "stdafx.h"
 #include "RadarScreen.h"
-
+#include "EuroScopePlugIn.h"
 //ULONG_PTR m_gdiplusToken;
+
+//EUroScopeplguin definiation to get the flightplan
+EuroScopePlugIn::CFlightPlan CorrelatedFlightPlan = radarTarget.GetCorrelatedFlightPlan();
+
+
 
 RadarScreen::RadarScreen()
 {
@@ -491,7 +496,7 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 				: 60;
 
 
-			std::string wake = FlightPlan.GetFlightPlanData().GetAircraftWtc();
+			char wake = FlightPlan.GetFlightPlanData().GetAircraftWtc();
 			
 
 			double ntrf = landTime + lineupTime+departTime+20;

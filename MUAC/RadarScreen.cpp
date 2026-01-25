@@ -535,7 +535,7 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 				AcSymbols::DrawSpeedVector(&dc, AcState, this, radarTarget, IsPrimary, IsSoft, MenuBar::GetVelValueButtonPressed(ButtonsPressed));
 			}
 
-			char wake = CorrelatedFlightPlan.GetFlightPlanData().GetAircraftWtc()
+			char wake = CorrelatedFlightPlan.GetFlightPlanData().GetAircraftWtc();
 			// If final approach help is toggled, display the vectors
 			if (wake == 'H' || wake == 'J') {
 				if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {

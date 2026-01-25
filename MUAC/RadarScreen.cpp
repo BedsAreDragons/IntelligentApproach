@@ -4,7 +4,6 @@
 //ULONG_PTR m_gdiplusToken;
 
 //EUroScopeplguin definiation to get the flightplan
-EuroScopePlugIn::CFlightPlan CorrelatedFlightPlan = radarTarget.GetCorrelatedFlightPlan();
 
 
 
@@ -470,8 +469,10 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 		if (HideTarget)
 			continue;
 
-#pragma region BeforeTags
+EuroScopePlugIn::CFlightPlan CorrelatedFlightPlan = radarTarget.GetCorrelatedFlightPlan();
 
+#pragma region BeforeTags
+		
 		if (Phase == REFRESH_PHASE_BEFORE_TAGS) {
 
 

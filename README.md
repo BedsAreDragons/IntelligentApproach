@@ -1,7 +1,7 @@
 # Intelligent Approach
 
 <p align="center">
-	<img alt="UAC PlugIn header" src="https://pierr3.github.io/UACPlugin/img/header.png"/>
+	<img alt="Intelligent Approach" src="https://github.com/BedsAreDragons/IntelligentApproach/blob/main/docs/img/exampl.png?raw=true"/>
 </p>
 
 This is a VATSIM specific intelligent approach build, based on a dumbed down Pierre Ferran's UACPlugin

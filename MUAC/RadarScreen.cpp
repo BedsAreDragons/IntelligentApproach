@@ -491,7 +491,7 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 				: 60;
 
 
-			const wake = FlightPlan.GetFlightPlanData().GetAircraftWtc();
+			string wake = FlightPlan.GetFlightPlanData().GetAircraftWtc();
 			
 
 			double ntrf = landTime + lineupTime+departTime+20;
@@ -528,13 +528,13 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 
 
 			// If final approach help is toggled, display the vectors
-			if (wake == 'H' || 'J') {
+			if (wake == 'H' || wake == 'J') {
 				if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {
 					bool existsInList = find(ExtendedAppVector.begin(), ExtendedAppVector.end(), string(radarTarget.GetCallsign())) != ExtendedAppVector.end();
 					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? htd : htdf);
 					AddScreenObject(SCREEN_AC_APP_ARROW, radarTarget.GetCallsign(), r, true, "");
 			}
-			} elif (wake == 'L') {
+			} else if (wake == 'L') {
 				if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {
 					bool existsInList = find(ExtendedAppVector.begin(), ExtendedAppVector.end(), string(radarTarget.GetCallsign())) != ExtendedAppVector.end();
 					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? ltd : ltdf);

@@ -469,7 +469,7 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 		if (HideTarget)
 			continue;
 
-EuroScopePlugIn::CFlightPlan CorrelatedFlightPlan = radarTarget.GetCorrelatedFlightPlan();
+
 
 #pragma region BeforeTags
 		
@@ -479,6 +479,9 @@ EuroScopePlugIn::CFlightPlan CorrelatedFlightPlan = radarTarget.GetCorrelatedFli
 			const bool hasConfig =
         	CCallsignLookup::Available &&
         	CCallsignLookup::Lookup != nullptr;
+
+
+			
 
 			const int lineupTime = hasConfig
 				? CCallsignLookup::Lookup->getLineupTime()
@@ -497,7 +500,7 @@ EuroScopePlugIn::CFlightPlan CorrelatedFlightPlan = radarTarget.GetCorrelatedFli
 				: 60;
 
 
-			char wake = FlightPlan.GetFlightPlanData().GetAircraftWtc();
+			
 			
 
 			double ntrf = landTime + lineupTime+departTime+20;
@@ -532,7 +535,7 @@ EuroScopePlugIn::CFlightPlan CorrelatedFlightPlan = radarTarget.GetCorrelatedFli
 				AcSymbols::DrawSpeedVector(&dc, AcState, this, radarTarget, IsPrimary, IsSoft, MenuBar::GetVelValueButtonPressed(ButtonsPressed));
 			}
 
-
+			char wake = CorrelatedFlightPlan.GetFlightPlanData().GetAircraftWtc()
 			// If final approach help is toggled, display the vectors
 			if (wake == 'H' || wake == 'J') {
 				if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {

@@ -537,23 +537,25 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 
 			char wake = CorrelatedFlightPlan.GetFlightPlanData().GetAircraftWtc();
 			// If final approach help is toggled, display the vectors
-			if (wake == 'H' || wake == 'J') {
+			if (AcState == TagConfiguration::TagStates::Assumed) {
+				if (wake == 'H' || wake == 'J') {
+					if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {
+						bool existsInList = find(ExtendedAppVector.begin(), ExtendedAppVector.end(), string(radarTarget.GetCallsign())) != ExtendedAppVector.end();
+						CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? htdf : htd);
+						AddScreenObject(SCREEN_AC_APP_ARROW, radarTarget.GetCallsign(), r, true, "");
+				}
+				} else if (wake == 'L') {
+					if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {
+						bool existsInList = find(ExtendedAppVector.begin(), ExtendedAppVector.end(), string(radarTarget.GetCallsign())) != ExtendedAppVector.end();
+						CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? ltdf : ltd);
+						AddScreenObject(SCREEN_AC_APP_ARROW, radarTarget.GetCallsign(), r, true, "");
+				}
+				} else {
 				if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {
-					bool existsInList = find(ExtendedAppVector.begin(), ExtendedAppVector.end(), string(radarTarget.GetCallsign())) != ExtendedAppVector.end();
-					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? htdf : htd);
-					AddScreenObject(SCREEN_AC_APP_ARROW, radarTarget.GetCallsign(), r, true, "");
-			}
-			} else if (wake == 'L') {
-				if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {
-					bool existsInList = find(ExtendedAppVector.begin(), ExtendedAppVector.end(), string(radarTarget.GetCallsign())) != ExtendedAppVector.end();
-					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? ltdf : ltd);
-					AddScreenObject(SCREEN_AC_APP_ARROW, radarTarget.GetCallsign(), r, true, "");
-			}
-			} else {
-			if (CorrelatedFlightPlan.GetControllerAssignedData().GetClearedAltitude() == 1) {
-					bool existsInList = find(ExtendedAppVector.begin(), ExtendedAppVector.end(), string(radarTarget.GetCallsign())) != ExtendedAppVector.end();
-					CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? ntdf : ntd);
-					AddScreenObject(SCREEN_AC_APP_ARROW, radarTarget.GetCallsign(), r, true, "");
+						bool existsInList = find(ExtendedAppVector.begin(), ExtendedAppVector.end(), string(radarTarget.GetCallsign())) != ExtendedAppVector.end();
+						CRect r = AcSymbols::DrawApproachVector(&dc, this, radarTarget, existsInList ? ntdf : ntd);
+						AddScreenObject(SCREEN_AC_APP_ARROW, radarTarget.GetCallsign(), r, true, "");
+				}
 			}
 		}
 	}

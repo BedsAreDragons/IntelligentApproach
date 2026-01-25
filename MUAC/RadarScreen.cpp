@@ -491,7 +491,7 @@ void RadarScreen::OnRefresh(HDC hDC, int Phase)
 				: 60;
 
 
-			string wake = FlightPlan.GetFlightPlanData().GetAircraftWtc();
+			std::string wake = FlightPlan.GetFlightPlanData().GetAircraftWtc();
 			
 
 			double ntrf = landTime + lineupTime+departTime+20;

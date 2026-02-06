@@ -8,7 +8,7 @@ This is a VATSIM specific intelligent approach build, based on a dumbed down Pie
  * Distance Based Seperation
  * Time Based Seperation
  * Mixed Mode
- * Config's for any airport for FIR
+ * Config's for any profile
 
 
  Copyright Natan Sobolew  ©2025 and Pierre Ferran ©2025

@@ -64,7 +64,7 @@ public:
 				historyTrailPoint.x + DRAWING_AC_SQUARE_TRAIL_SIZE,  historyTrailPoint.y + DRAWING_AC_SQUARE_TRAIL_SIZE);
 			Area.NormalizeRect();
 			dc->Rectangle(Area);
-
+//
 			// We skip one position for the other
 			TrailPosition = radarTarget.GetPreviousPosition(radarTarget.GetPreviousPosition(TrailPosition));
 		}

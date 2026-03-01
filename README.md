@@ -15,3 +15,4 @@ This is a VATSIM specific intelligent approach build, based on a dumbed down Pie
  We are not affiliated with real life Intelligent Approach, in any way, shape or form.
 
  You must add the plugins logo in any events where it will be utilised by standard by your division or subdivision on VATSIM in order to use this plugin and run events that utilise it.
+.

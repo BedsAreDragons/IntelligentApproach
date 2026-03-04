@@ -23,7 +23,7 @@ MUAC::MUAC()
     GetModuleFileNameA(HINSTANCE(&__ImageBase), DllPathFile, sizeof(DllPathFile));
 
     std::string DllPath = DllPathFile;
-    DllPath.resize(DllPath.size() - strlen("MUAC.dll"));
+    DllPath.resize(DllPath.size() - strlen("IntelligentApproach.dll"));
 
     std::string FilePath = DllPath + "\\config.txt";
 

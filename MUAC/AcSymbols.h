@@ -186,35 +186,49 @@ public:
 		dc->RestoreDC(save);
 	}
 	
-	static CRect DrawApproachVector(CDC* dc, CRadarScreen* radar, CRadarTarget radarTarget, double distance = 3) {
+		static CRect DrawApproachVector(CDC* dc, CRadarScreen* radar, CRadarTarget radarTarget, double distance = 3.0)
+	{
 		int save = dc->SaveDC();
 
-		double reverseHeading = (int)(radarTarget.GetTrackHeading() + 180) % 360;
-		CPosition middlePointArrow = Extrapolate(radarTarget.GetPosition().GetPosition(), reverseHeading, distance * 1852);
+		// Reverse heading
+		double reverseHeading = radarTarget.GetTrackHeading() + 180.0;
+		if (reverseHeading >= 360.0) reverseHeading -= 360.0;
 
-		double topArrowHeading = (int)(reverseHeading - 40) % 360;
-		CPosition topPointArrow = Extrapolate(middlePointArrow, topArrowHeading, 0.6 * 1852);
-		double bottomArrowHeading = (int)(reverseHeading + 40) % 360;
-		CPosition bottomPointArrow = Extrapolate(middlePointArrow, bottomArrowHeading, 0.6 * 1852);
-		
-		CPen ArrowPen(PS_SOLID, 1, Colours::PurpleDisplay.ToCOLORREF());
-		dc->SelectObject(&ArrowPen);
+		// Base position
+		CPosition startPos = radarTarget.GetPosition().GetPosition();
+		CPosition middle = Extrapolate(startPos, reverseHeading, distance * 1852.0);
 
-		POINT middleArrowPointPx = radar->ConvertCoordFromPositionToPixel(middlePointArrow);
+		// Two points defining the diameter of the semicircle
+		CPosition topPos = Extrapolate(middle, reverseHeading - 40.0, 0.6 * 1852.0);
+		CPosition bottomPos = Extrapolate(middle, reverseHeading + 40.0, 0.6 * 1852.0);
 
-		POINT topArrowPointPx = radar->ConvertCoordFromPositionToPixel(topPointArrow);
-		dc->MoveTo(middleArrowPointPx);
-		dc->LineTo(topArrowPointPx);
+		POINT pTop = radar->ConvertCoordFromPositionToPixel(topPos);
+		POINT pBottom = radar->ConvertCoordFromPositionToPixel(bottomPos);
 
-		POINT bottomArrowPointPx = radar->ConvertCoordFromPositionToPixel(bottomPointArrow);
-		dc->MoveTo(middleArrowPointPx);
-		dc->LineTo(bottomArrowPointPx);
+		// Circle center (midpoint of diameter)
+		POINT center;
+		center.x = (pTop.x + pBottom.x) / 2;
+		center.y = (pTop.y + pBottom.y) / 2;
+
+		double dx = pBottom.x - pTop.x;
+		double dy = pBottom.y - pTop.y;
+		double radius = sqrt(dx * dx + dy * dy) / 2.0;
+
+		CRect circleRect(
+			(int)(center.x - radius),
+			(int)(center.y - radius),
+			(int)(center.x + radius),
+			(int)(center.y + radius)
+		);
+
+		CPen pen(PS_SOLID | PS_ENDCAP_ROUND, 2, Colours::PurpleDisplay.ToCOLORREF());
+		dc->SelectObject(&pen);
+
+		// Draw semicircle (swap arguments if it faces wrong way)
+		dc->Arc(circleRect, pTop, pBottom);
 
 		dc->RestoreDC(save);
 
-		CRect r(topArrowPointPx.x, topArrowPointPx.y, middleArrowPointPx.x, bottomArrowPointPx.y);
-		r.NormalizeRect();
-		return r;
-
+		return circleRect;
 	};
 };

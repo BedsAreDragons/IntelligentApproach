@@ -31,7 +31,7 @@ CCallsignLookup::CCallsignLookup(const std::string& fileName)
             configValues[key] = value;
     }
 
-    Available = false;
+    Available = true;
 }
 
 int CCallsignLookup::getValue(const std::string& key) const
